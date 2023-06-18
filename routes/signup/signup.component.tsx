@@ -8,36 +8,33 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native'
 
 const Signup = () => {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
 
-    const registerHandler = async () => {
-        try {
-            const response = await fetch('https://api.example.com/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email,
-                    name,
-                    password,
-                }),
+    const registerHandler = () => {
+        const userData = {
+            email: email,
+            name: name,
+            password: password
+        };
+
+        fetch('http://10.0.2.2:3000/users/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('User created:', data);
+            })
+            .catch(error => {
+                console.error('Error creating user:', error);
             });
-
-            if (!response.ok) {
-                throw new Error('Registration failed');
-            }
-
-            const data = await response.json();
-            console.log('Registration successful:', data);
-        } catch (error) {
-            console.log('Registration error:', error);
-        }
     };
 
     return (
