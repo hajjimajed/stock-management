@@ -9,16 +9,16 @@ import {
     View
 } from 'react-native';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../../contexts/auth.context';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Signin = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [jwtToken, setJwtToken] = useState('');
 
-    const { setUserData } = useContext(AuthContext);
+    const { setJwtToken } = useContext(AuthContext)
 
     const signinHandler = () => {
         const userData = { email: email, password: password }
@@ -34,37 +34,37 @@ const Signin = () => {
                 return response.json();
             })
             .then(data => {
-                const { token, userId } = data;
+                const { token, user } = data;
                 storeVar('token', token);
                 setJwtToken(token);
+                storeVar('userData', JSON.stringify(user));
                 console.log('User logged successfully:', data);
-                fetchUserData(userId, token);
             })
             .catch(error => {
                 console.error('Error signin user:', error);
             });
     }
 
-    const fetchUserData = async (userId, jwtToken) => {
-        try {
-            const response = await fetch(`http://10.0.2.2:3000/users/user-data?userId=${userId}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${jwtToken}`
-                }
-            });
+    // const fetchUserData = async (userId, jwtToken) => {
+    //     try {
+    //         const response = await fetch(`http://10.0.2.2:3000/users/user-data?userId=${userId}`, {
+    //             method: 'GET',
+    //             headers: {
+    //                 'Authorization': `Bearer ${jwtToken}`
+    //             }
+    //         });
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch user data');
-            }
+    //         if (!response.ok) {
+    //             throw new Error('Failed to fetch user data');
+    //         }
 
-            const result = await response.json();
-            setUserData(result.user);
-            console.log('res res res', result.user)
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-        }
-    };
+    //         const result = await response.json();
+    //         setUserData(result.user);
+    //         console.log('res res res', result.user)
+    //     } catch (error) {
+    //         console.error('Error fetching user data:', error);
+    //     }
+    // };
 
     const storeVar = async (key, value) => {
         try {

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+import { AuthContext } from '../../contexts/auth.context';
 
 const Home = () => {
     const navigation = useNavigation();
@@ -15,23 +17,43 @@ const Home = () => {
         navigation.navigate('Profile');
     }
 
+    const { isConnected, signout } = useContext(AuthContext);
+
+    const handleSignout = () => {
+        signout();
+    };
+
     return (
         <View>
-            <SafeAreaView>
-                <TouchableOpacity onPress={navigateToSignup}>
-                    <Text>Signup</Text>
-                </TouchableOpacity>
-            </SafeAreaView>
-            <SafeAreaView>
-                <TouchableOpacity onPress={navigateToSignin}>
-                    <Text>Signin</Text>
-                </TouchableOpacity>
-            </SafeAreaView>
-            <SafeAreaView>
-                <TouchableOpacity onPress={navigateToProfile}>
-                    <Text>Profile</Text>
-                </TouchableOpacity>
-            </SafeAreaView>
+            {isConnected ? (
+                <>
+                    <Text>Hello</Text>
+                    <SafeAreaView>
+                        <TouchableOpacity onPress={navigateToProfile}>
+                            <Text>Profile</Text>
+                        </TouchableOpacity>
+                    </SafeAreaView>
+                    <SafeAreaView>
+                        <TouchableOpacity onPress={handleSignout}>
+                            <Text>Signout</Text>
+                        </TouchableOpacity>
+                    </SafeAreaView>
+                </>
+            ) : (
+                <>
+                    <SafeAreaView>
+                        <TouchableOpacity onPress={navigateToSignup}>
+                            <Text>Signup</Text>
+                        </TouchableOpacity>
+                    </SafeAreaView>
+                    <SafeAreaView>
+                        <TouchableOpacity onPress={navigateToSignin}>
+                            <Text>Signin</Text>
+                        </TouchableOpacity>
+                    </SafeAreaView>
+
+                </>
+            )}
         </View>
     );
 }

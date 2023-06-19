@@ -1,19 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 
 import { useContext } from 'react';
 import { AuthContext } from '../../contexts/auth.context';
 
 const Profile = () => {
+    const { jwtToken, userData, userId } = useContext(AuthContext);
+    const [data, setData] = useState({})
 
-    const { jwtToken, userData } = useContext(AuthContext);
-    console.log('user data :', userData)
+    useEffect(() => {
+        setData(userData)
+    }, [userData])
 
 
     return (
         <View>
-            <Text>{userData.name}</Text>
-            <Text>{userData.email}</Text>
+            <Text>{data.name}</Text>
+            <Text>{data.email}</Text>
         </View>
     );
 }
