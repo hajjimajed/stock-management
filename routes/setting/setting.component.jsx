@@ -4,7 +4,7 @@ import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import { useContext } from 'react';
 import { AuthContext } from '../../contexts/auth.context';
 
-const Profile = () => {
+const Setting = () => {
     const { jwtToken, userData, userId } = useContext(AuthContext);
     const [data, setData] = useState({})
 
@@ -21,4 +21,4 @@ const Profile = () => {
     );
 }
 
-export default Profile;
+export default Setting;

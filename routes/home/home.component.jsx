@@ -13,8 +13,12 @@ const Home = () => {
     const navigateToSignin = () => {
         navigation.navigate('Signin');
     }
-    const navigateToProfile = () => {
-        navigation.navigate('Profile');
+    const navigateToSetting = () => {
+        navigation.navigate('Setting');
+    }
+
+    const navigateToInventory = () => {
+        navigation.navigate('Inventory');
     }
 
     const { isConnected, signout } = useContext(AuthContext);
@@ -29,8 +33,13 @@ const Home = () => {
                 <>
                     <Text>Hello</Text>
                     <SafeAreaView>
-                        <TouchableOpacity onPress={navigateToProfile}>
-                            <Text>Profile</Text>
+                        <TouchableOpacity onPress={navigateToSetting}>
+                            <Text>Setting</Text>
+                        </TouchableOpacity>
+                    </SafeAreaView>
+                    <SafeAreaView>
+                        <TouchableOpacity onPress={navigateToInventory}>
+                            <Text>My Inventory</Text>
                         </TouchableOpacity>
                     </SafeAreaView>
                     <SafeAreaView>

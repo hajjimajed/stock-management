@@ -8,7 +8,8 @@ import { AuthProvider } from './contexts/auth.context';
 import Home from './routes/home/home.component';
 import Signup from './routes/signup/signup.component';
 import Signin from './routes/signin/signin.component';
-import Profile from './routes/profile/profile.component';
+import Setting from './routes/setting/setting.component';
+import Inventory from './routes/inventory/inventory.component';
 
 const Stack = createStackNavigator();
 
@@ -22,7 +23,8 @@ function App(): JSX.Element {
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Signup" component={Signup} />
           <Stack.Screen name="Signin" component={Signin} />
-          <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="Setting" component={Setting} />
+          <Stack.Screen name="Inventory" component={Inventory} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>
