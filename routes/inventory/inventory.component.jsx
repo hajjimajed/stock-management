@@ -1,5 +1,5 @@
-import { useState, useContext } from "react";
-import { SafeAreaView, Text, TextInput, TouchableOpacity, View, StyleSheet } from "react-native"
+import { useState, useContext, useEffect } from "react";
+import { SafeAreaView, Text, TextInput, TouchableOpacity, View, StyleSheet } from "react-native";
 import { AuthContext } from "../../contexts/auth.context";
 
 const Inventory = () => {
@@ -9,13 +9,15 @@ const Inventory = () => {
     const [catName, setCatName] = useState('');
     const [catDescription, setCatDescription] = useState('');
 
+    const [categories, setCategories] = useState([]);
+
     const addCategoryHandler = () => {
         const categoryData = {
             name: catName,
             description: catDescription
         };
 
-        fetch('http://10.0.2.2:3000/users/create-category', {
+        fetch('http://10.0.2.2:3000/inventory/create-category', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,20 +41,51 @@ const Inventory = () => {
     };
 
 
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch(
+                    `http://10.0.2.2:3000/inventory/get-categories`,
+                    {
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Authorization': `Bearer ${jwtToken}`,
+                            'X-User-Id': userId,
+                        },
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch categories");
+                }
+
+                const data = await response.json();
+                setCategories(data.categories);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchCategories();
+    }, [userId, jwtToken]);
+
+
     const [prodName, setProdName] = useState('');
     const [prodDescription, setProdDescription] = useState('');
     const [prodQuantity, setProdQuantity] = useState('');
     const [prodPrice, setProdPrice] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
 
     const addProductHandler = () => {
         const productData = {
             name: prodName,
             description: prodDescription,
             quantity: prodQuantity,
-            price: prodPrice
+            price: prodPrice,
+            categoryId: selectedCategory
         }
 
-        fetch('http://10.0.2.2:3000/users/create-product', {
+        fetch('http://10.0.2.2:3000/inventory/create-product', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
@@ -97,7 +130,17 @@ const Inventory = () => {
                 </TouchableOpacity>
             </SafeAreaView> */}
 
-            <Text>add new product</Text>
+            <Text>
+                <Text style={styles.heading}>Categories:</Text>
+                {categories.map((category) => (
+                    <View key={category.id} style={styles.category}>
+                        <Text style={styles.categoryName}>{category.name}</Text>
+                        <Text style={styles.categoryDescription}>
+                            {category.description}
+                        </Text>
+                    </View>
+                ))}
+            </Text>
 
             <SafeAreaView style={styles.container}>
                 <TextInput
@@ -124,6 +167,13 @@ const Inventory = () => {
                     value={prodPrice}
                     onChangeText={setProdPrice}
                 />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Category Id"
+                    value={selectedCategory}
+                    onChangeText={setSelectedCategory}
+                />
+
                 <TouchableOpacity onPress={addProductHandler} style={styles.btn}>
                     <Text style={styles.btnText}>Add Product</Text>
                 </TouchableOpacity>

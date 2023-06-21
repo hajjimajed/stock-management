@@ -43,28 +43,39 @@ const Signin = () => {
             .catch(error => {
                 console.error('Error signin user:', error);
             });
+
     }
 
-    // const fetchUserData = async (userId, jwtToken) => {
-    //     try {
-    //         const response = await fetch(`http://10.0.2.2:3000/users/user-data?userId=${userId}`, {
-    //             method: 'GET',
-    //             headers: {
-    //                 'Authorization': `Bearer ${jwtToken}`
-    //             }
-    //         });
-
-    //         if (!response.ok) {
-    //             throw new Error('Failed to fetch user data');
+    // const getCategories = (token, userId) => {
+    //     fetch('http://10.0.0.2:3000/inventory/get-categories', {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Authorization': `Bearer ${token}`,
+    //             'X-User-Id': userId
     //         }
+    //     })
+    //         .then(response => {
+    //             if (!response.ok) {
+    //                 throw new Error('failed to fetch categories')
+    //             }
+    //             return response.json();
+    //         })
+    //         .then(categories => {
+    //             if (Array.isArray(categories)) {
+    //                 setCategories(categories);
+    //                 console.log(categories);
+    //             } else {
+    //                 throw new Error('Invalid response format');
+    //             }
+    //         })
+    //         .catch(error => {
+    //             console.error(error);
+    //         });
+    // }
 
-    //         const result = await response.json();
-    //         setUserData(result.user);
-    //         console.log('res res res', result.user)
-    //     } catch (error) {
-    //         console.error('Error fetching user data:', error);
-    //     }
-    // };
+
+
 
     const storeVar = async (key, value) => {
         try {
