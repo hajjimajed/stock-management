@@ -58,6 +58,7 @@ const Setting = () => {
         <View>
             <Text>{data.name}</Text>
             <Text>{data.email}</Text>
+            <Text>{data.about}</Text>
             <Image source={{ uri: `http://10.0.2.2:3000${data.profileImg}` }} style={{ width: 100, height: 100 }} />
             <View>
                 <TextInput
