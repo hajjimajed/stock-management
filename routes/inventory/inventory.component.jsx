@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { SafeAreaView, Text, TextInput, TouchableOpacity, View, StyleSheet } from "react-native";
 import { AuthContext } from "../../contexts/auth.context";
+import { launchImageLibrary } from 'react-native-image-picker';
 
 const Inventory = () => {
 
@@ -10,6 +11,7 @@ const Inventory = () => {
     const [catDescription, setCatDescription] = useState('');
 
     const [categories, setCategories] = useState([]);
+    const [allProducts, setAllProducts] = useState([]);
 
     const addCategoryHandler = () => {
         const categoryData = {
@@ -69,30 +71,64 @@ const Inventory = () => {
         fetchCategories();
     }, [userId, jwtToken]);
 
+    useEffect(() => {
+        const fetchAllProducts = async () => {
+            try {
+                const response = await fetch(
+                    'http://10.0.2.2:3000/inventory/get-all-products',
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Authorization': `Bearer ${jwtToken}`,
+                            'X-User-Id': userId,
+                        }
+                    }
+                )
+                if (!response.ok) {
+                    throw new Error('Failed to fetch all products');
+                }
+
+                const data = await response.json();
+                setAllProducts(data);
+                console.log(data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        fetchAllProducts();
+        console.log(allProducts);
+    }, [userId, jwtToken])
+
 
     const [prodName, setProdName] = useState('');
     const [prodDescription, setProdDescription] = useState('');
     const [prodQuantity, setProdQuantity] = useState('');
     const [prodPrice, setProdPrice] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedImage, setSelectedImage] = useState(null);
 
     const addProductHandler = () => {
-        const productData = {
-            name: prodName,
-            description: prodDescription,
-            quantity: prodQuantity,
-            price: prodPrice,
-            categoryId: selectedCategory
-        }
+        const productData = new FormData();
+        productData.append('name', prodName);
+        productData.append('description', prodDescription);
+        productData.append('quantity', prodQuantity);
+        productData.append('price', prodPrice);
+        productData.append('categoryId', selectedCategory);
+        productData.append('image', {
+            uri: selectedImage,
+            type: 'image/jpeg', // Adjust the type accordingly if necessary
+            name: 'profile.jpg', // You can change the name if desired
+        });
 
         fetch('http://10.0.2.2:3000/inventory/create-product', {
             method: 'POST',
             headers: {
-                'Content-type': 'application/json',
+                'Content-type': 'multipart/form-data',
                 'Authorization': `Bearer ${jwtToken}`,
                 'X-User-Id': userId
             },
-            body: JSON.stringify(productData)
+            body: productData
         })
             .then(response => {
                 if (!response.ok) {
@@ -107,7 +143,18 @@ const Inventory = () => {
                 console.error(error);
             })
     }
-
+    const openImageLibrary = () => {
+        launchImageLibrary({ mediaType: 'photo' }, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image selection');
+            } else if (response.errorCode) {
+                console.log('Image Selection Error: ', response.errorMessage);
+            } else {
+                // Handle the selected image or video here
+                setSelectedImage(response.assets[0].uri);
+            }
+        });
+    };
     return (
         <View>
             {/* <Text>add new category</Text>
@@ -173,7 +220,9 @@ const Inventory = () => {
                     value={selectedCategory}
                     onChangeText={setSelectedCategory}
                 />
-
+                <TouchableOpacity style={styles.btn} onPress={openImageLibrary}>
+                    <Text style={styles.btnText}>Select Image</Text>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={addProductHandler} style={styles.btn}>
                     <Text style={styles.btnText}>Add Product</Text>
                 </TouchableOpacity>

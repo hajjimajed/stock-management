@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaView, Text, TouchableOpacity, View, Image, TextInput, Button } from 'react-native';
 
 import { useContext } from 'react';
@@ -12,12 +13,15 @@ const Setting = () => {
     const [upName, setUpName] = useState(userData.name);
     const [upAbout, setUpAbout] = useState(userData.about);
     const [upAddress, setUpAddress] = useState(userData.address);
+    const [selectedImage, setSelectedImage] = useState(null);
 
 
     useEffect(() => {
         setData(userData)
     }, [userData])
 
+    const { name, email, about, profileImg } = data;
+    const pImg = profileImg && profileImg.split("\\").pop();
     const editUserHandler = () => {
 
         const formData = new FormData();
@@ -25,6 +29,11 @@ const Setting = () => {
         formData.append('name', upName);
         formData.append('about', upAbout);
         formData.append('address', upAddress);
+        formData.append('image', {
+            uri: selectedImage,
+            type: 'image/jpeg', // Adjust the type accordingly if necessary
+            name: 'profile.jpg', // You can change the name if desired
+        });
         console.log('some infos', JSON.stringify(formData))
 
         fetch('http://10.0.2.2:3000/users/edit', {
@@ -50,16 +59,27 @@ const Setting = () => {
             });
     }
 
-
+    const openImageLibrary = () => {
+        launchImageLibrary({ mediaType: 'photo' }, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image selection');
+            } else if (response.errorCode) {
+                console.log('Image Selection Error: ', response.errorMessage);
+            } else {
+                // Handle the selected image or video here
+                setSelectedImage(response.assets[0].uri);
+            }
+        });
+    };
 
 
 
     return (
         <View>
-            <Text>{data.name}</Text>
-            <Text>{data.email}</Text>
-            <Text>{data.about}</Text>
-            <Image source={{ uri: `http://10.0.2.2:3000${data.profileImg}` }} style={{ width: 100, height: 100 }} />
+            <Text>{name}</Text>
+            <Text>{email}</Text>
+            <Text>{about}</Text>
+            <Image source={{ uri: `http://10.0.2.2:3000/images/${pImg}` }} style={{ width: 100, height: 100 }} />
             <View>
                 <TextInput
                     placeholder="Email"
@@ -81,6 +101,9 @@ const Setting = () => {
                     value={upAddress}
                     onChangeText={setUpAddress}
                 />
+                <TouchableOpacity onPress={openImageLibrary}>
+                    <Text>Select Image</Text>
+                </TouchableOpacity>
                 <Button title="update" onPress={editUserHandler} />
             </View>
         </View>
