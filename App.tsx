@@ -10,6 +10,7 @@ import Signup from './routes/signup/signup.component';
 import Signin from './routes/signin/signin.component';
 import Setting from './routes/setting/setting.component';
 import Inventory from './routes/inventory/inventory.component';
+import Scanner from './routes/scanner/scanner.component';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,7 @@ function App(): JSX.Element {
           <Stack.Screen name="Signin" component={Signin} />
           <Stack.Screen name="Setting" component={Setting} />
           <Stack.Screen name="Inventory" component={Inventory} />
+          <Stack.Screen name="Scanner" component={Scanner} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>

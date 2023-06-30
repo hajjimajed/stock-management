@@ -21,6 +21,10 @@ const Home = () => {
         navigation.navigate('Inventory');
     }
 
+    const navigateToScanner = () => {
+        navigation.navigate('Scanner');
+    }
+
     const { isConnected, signout } = useContext(AuthContext);
 
     const handleSignout = () => {
@@ -40,6 +44,11 @@ const Home = () => {
                     <SafeAreaView>
                         <TouchableOpacity onPress={navigateToInventory}>
                             <Text>My Inventory</Text>
+                        </TouchableOpacity>
+                    </SafeAreaView>
+                    <SafeAreaView>
+                        <TouchableOpacity onPress={navigateToScanner}>
+                            <Text>Scanner</Text>
                         </TouchableOpacity>
                     </SafeAreaView>
                     <SafeAreaView>
