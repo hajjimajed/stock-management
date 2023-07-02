@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { launchImageLibrary } from 'react-native-image-picker';
-import { SafeAreaView, Text, TouchableOpacity, View, Image, TextInput, Button } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, View, Image, TextInput, Button, ImageBackground, Dimensions, StyleSheet } from 'react-native';
 
 import { useContext } from 'react';
 import { AuthContext } from '../../contexts/auth.context';
+
+const image = require('../../assets/images/bg.jpg');
+const { width, height } = Dimensions.get('window');
 
 const Setting = () => {
     const { jwtToken, userData, userId } = useContext(AuthContext);
@@ -75,7 +78,7 @@ const Setting = () => {
 
 
     return (
-        <View>
+        <ImageBackground source={image} style={styles.container}>
             <Text>{name}</Text>
             <Text>{email}</Text>
             <Text>{about}</Text>
@@ -106,8 +109,60 @@ const Setting = () => {
                 </TouchableOpacity>
                 <Button title="update" onPress={editUserHandler} />
             </View>
-        </View>
+        </ImageBackground>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        width: width,
+        height: height,
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        padding: 10,
+
+    },
+    section: {
+        width: width,
+        alignItems: 'center',
+    },
+    image: {
+        width: width - 100,
+        height: 300,
+        resizeMode: 'cover',
+        borderRadius: 30
+    },
+    h1: {
+        fontSize: 26,
+        fontWeight: '500',
+        textAlign: 'center',
+        color: '#000000',
+    },
+    p: {
+        fontSize: 14,
+        fontWeight: '400',
+        textAlign: 'center',
+    },
+    signInButton: {
+        width: '50%',
+        height: '100%',
+        backgroundColor: 'transparent',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 12,
+        elevation: 5,
+        ...Platform.select({
+            android: {
+                elevation: 0, // Remove box shadow on Android
+            },
+        }),
+    },
+    buttonText: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: '#000000',
+
+    },
+});
 
 export default Setting;
