@@ -3,6 +3,10 @@ import { StyleSheet } from 'react-native';
 import { SafeAreaView, Text, TouchableOpacity, View, Image, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Dimensions } from 'react-native';
+import { SvgXml } from 'react-native-svg';
+
+import { home, setting, upAndDown, apps } from '../../svg';
+
 
 import { AuthContext } from '../../contexts/auth.context';
 
@@ -10,6 +14,7 @@ const image = require('../../assets/images/bg.jpg');
 const { width, height } = Dimensions.get('window');
 
 const Home = () => {
+
     const navigation = useNavigation();
 
     const navigateToSignup = () => {
@@ -40,8 +45,7 @@ const Home = () => {
         <View>
             {isConnected ? (
                 <>
-                    <Text>Hello</Text>
-                    <SafeAreaView>
+                    {/* <SafeAreaView>
                         <TouchableOpacity onPress={navigateToSetting}>
                             <Text>Setting</Text>
                         </TouchableOpacity>
@@ -60,7 +64,30 @@ const Home = () => {
                         <TouchableOpacity onPress={handleSignout}>
                             <Text>Signout</Text>
                         </TouchableOpacity>
-                    </SafeAreaView>
+                    </SafeAreaView> */}
+
+                    <View style={styles.mainContainer}>
+                        <Text>hello user</Text>
+
+                        <SafeAreaView style={styles.bottomBar}>
+                            <TouchableOpacity style={styles.bottomBarBtn}>
+                                <SvgXml xml={home} width="100%" height="100%" />
+                                <Text>Home</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <SvgXml xml={apps} width="100%" height="100%" />
+                                <Text>Items</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <SvgXml xml={upAndDown} width="100%" height="100%" />
+                                <Text>In/Out</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <SvgXml xml={setting} width="90%" height="90%" />
+                                <Text>Setting</Text>
+                            </TouchableOpacity>
+                        </SafeAreaView>
+                    </View>
                 </>
             ) : (
                 <>
@@ -109,6 +136,34 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         alignItems: 'center',
         padding: 10,
+
+    },
+    mainContainer: {
+        width: width,
+        height: height,
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        padding: 10,
+        backgroundColor: '#fff'
+    },
+    bottomBar: {
+        width: width,
+        height: 60,
+        backgroundColor: '#fff',
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        paddingLeft: 25,
+        paddingRight: 25,
+        paddingBottom: 15,
+        paddingTop: 15,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        elevation: 10
+    },
+    bottomBarBtn: {
 
     },
     section: {
