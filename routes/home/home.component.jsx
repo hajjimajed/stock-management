@@ -5,10 +5,10 @@ import { useNavigation } from '@react-navigation/native';
 import { Dimensions } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
-import { home, setting, upAndDown, apps } from '../../svg';
-
-
+import { notification, plus } from '../../svg';
 import { AuthContext } from '../../contexts/auth.context';
+import { TogglesContext } from '../../contexts/toggles.context';
+import Notification from '../../components/notifications/notification.component';
 
 const image = require('../../assets/images/bg.jpg');
 const { width, height } = Dimensions.get('window');
@@ -41,53 +41,55 @@ const Home = () => {
         signout();
     };
 
+    const { notif, setNotif } = useContext(TogglesContext);
+
+    const notifToggle = () => {
+        setNotif(!notif);
+    }
+
     return (
         <View>
             {isConnected ? (
                 <>
-                    {/* <SafeAreaView>
-                        <TouchableOpacity onPress={navigateToSetting}>
-                            <Text>Setting</Text>
-                        </TouchableOpacity>
-                    </SafeAreaView>
-                    <SafeAreaView>
-                        <TouchableOpacity onPress={navigateToInventory}>
-                            <Text>My Inventory</Text>
-                        </TouchableOpacity>
-                    </SafeAreaView>
-                    <SafeAreaView>
-                        <TouchableOpacity onPress={navigateToScanner}>
-                            <Text>Scanner</Text>
-                        </TouchableOpacity>
-                    </SafeAreaView>
-                    <SafeAreaView>
-                        <TouchableOpacity onPress={handleSignout}>
-                            <Text>Signout</Text>
-                        </TouchableOpacity>
-                    </SafeAreaView> */}
-
-                    <View style={styles.mainContainer}>
-                        <Text>hello user</Text>
-
-                        <SafeAreaView style={styles.bottomBar}>
-                            <TouchableOpacity style={styles.bottomBarBtn}>
-                                <SvgXml xml={home} width="100%" height="100%" />
-                                <Text>Home</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <SvgXml xml={apps} width="100%" height="100%" />
-                                <Text>Items</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <SvgXml xml={upAndDown} width="100%" height="100%" />
-                                <Text>In/Out</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <SvgXml xml={setting} width="90%" height="90%" />
+                    {/* <View style={styles.mainContainer}>
+                        <SafeAreaView>
+                            <TouchableOpacity onPress={navigateToSetting}>
                                 <Text>Setting</Text>
                             </TouchableOpacity>
                         </SafeAreaView>
-                    </View>
+                        <SafeAreaView>
+                            <TouchableOpacity onPress={navigateToInventory}>
+                                <Text>My Inventory</Text>
+                            </TouchableOpacity>
+                        </SafeAreaView>
+                        <SafeAreaView>
+                            <TouchableOpacity onPress={navigateToScanner}>
+                                <Text>Scanner</Text>
+                            </TouchableOpacity>
+                        </SafeAreaView>
+                        <SafeAreaView>
+                            <TouchableOpacity onPress={handleSignout}>
+                                <Text>Signout</Text>
+                            </TouchableOpacity>
+                        </SafeAreaView>
+                    </View> */}
+
+                    <SafeAreaView style={styles.mainContainer}>
+                        <SafeAreaView style={styles.topSection}>
+                            <SafeAreaView style={styles.topSectionC}>
+                                <TouchableOpacity>
+                                    <SvgXml xml={plus} width='28' height="28" />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={notifToggle}>
+                                    <SvgXml xml={notification} width='25' height="25" />
+                                </TouchableOpacity>
+                            </SafeAreaView>
+                        </SafeAreaView>
+                    </SafeAreaView>
+                    {
+                        notif ? (<Notification />) : (<View />)
+                    }
+
                 </>
             ) : (
                 <>
@@ -135,36 +137,35 @@ const styles = StyleSheet.create({
         height: height,
         justifyContent: 'space-evenly',
         alignItems: 'center',
-        padding: 10,
-
+    },
+    topSection: {
+        width: width,
+        height: 45,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        paddingRight: 10,
+        paddingLeft: 10,
+        position: 'absolute',
+        top: 0,
+        right: 0
+    },
+    topSectionC: {
+        height: '100%',
+        width: '20%',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     mainContainer: {
         width: width,
         height: height,
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-between',
         alignItems: 'center',
         padding: 10,
         backgroundColor: '#fff'
-    },
-    bottomBar: {
-        width: width,
-        height: 60,
-        backgroundColor: '#fff',
-        position: 'absolute',
-        bottom: 0,
-        right: 0,
-        paddingLeft: 25,
-        paddingRight: 25,
-        paddingBottom: 15,
-        paddingTop: 15,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        elevation: 10
-    },
-    bottomBarBtn: {
-
     },
     section: {
         width: width,

@@ -45,6 +45,7 @@ const Signin = () => {
                 storeVar('token', token);
                 setJwtToken(token);
                 storeVar('userData', JSON.stringify(user));
+                navigation.navigate('Home');
                 console.log('User logged successfully:', data);
             })
             .catch(error => {
