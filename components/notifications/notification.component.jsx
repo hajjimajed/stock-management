@@ -23,7 +23,7 @@ const Notification = () => {
                 <TouchableOpacity onPress={notifToggle}>
                     <SvgXml xml={leftArrow} width="22" height="22" />
                 </TouchableOpacity>
-                <Text style={styles.H1}>Notification</Text>
+                <Text style={styles.h1}>Notification</Text>
             </SafeAreaView>
         </SafeAreaView>
     )
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.2,
         borderBottomColor: '#adb5bd'
     },
-    H1: {
+    h1: {
         fontSize: 16,
         fontWeight: '500',
         color: '#000000',

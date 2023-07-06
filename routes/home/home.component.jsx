@@ -37,10 +37,6 @@ const Home = () => {
 
     const { isConnected, signout } = useContext(AuthContext);
 
-    const handleSignout = () => {
-        signout();
-    };
-
     const { notif, setNotif } = useContext(TogglesContext);
 
     const notifToggle = () => {
