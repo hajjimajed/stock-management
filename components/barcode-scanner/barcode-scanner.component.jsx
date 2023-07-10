@@ -4,11 +4,12 @@ import { Camera, useCameraDevices } from "react-native-vision-camera";
 import { useScanBarcodes, BarcodeFormat } from "vision-camera-code-scanner";
 import { SvgXml } from 'react-native-svg';
 
-import { close, focus1, focus2, focus3, focus4 } from "../../svg";
+import { close } from "../../svg";
 
 const { width, height } = Dimensions.get('window');
 
-const Scanner = () => {
+
+const BarcodeScanner = () => {
 
 
     const devices = useCameraDevices();
@@ -39,8 +40,6 @@ const Scanner = () => {
         return <Text>Camera not available</Text>;
     }
 
-
-
     return (
         device != null &&
         hasPermission && (
@@ -58,33 +57,30 @@ const Scanner = () => {
                     </Text>
                 ))}
                 {(
-                    <>
-                        <SvgXml xml={focus1} width='100' height='100' style={styles.focus1} />
-                        <SvgXml xml={focus2} width='100' height='100' style={styles.focus2} />
-                        <SvgXml xml={focus3} width='100' height='100' style={styles.focus3} />
-                        <SvgXml xml={focus4} width='100' height='100' style={styles.focus4} />
+                    // <TouchableOpacity onPress={handleSaveScannedValue} style={styles.button}>
+                    //     <Text style={styles.buttonText}>Save Scanned Value</Text>
+                    // </TouchableOpacity>
+                    <SafeAreaView style={styles.btnSection}>
+                        <Text style={styles.btnSectionH1}>Barcode Scan</Text>
+                        <SafeAreaView style={styles.buttons}>
+                            <TouchableOpacity>
+                                <SvgXml xml={close} width='20' height="20" />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={handleSaveScannedValue} style={styles.shotBtn}>
+                                <View style={styles.circle}>
 
-                        <SafeAreaView style={styles.btnSection}>
-                            <Text style={styles.btnSectionH1}>Barcode Scan</Text>
-                            <SafeAreaView style={styles.buttons}>
-                                <TouchableOpacity>
-                                    <SvgXml xml={close} width='20' height="20" />
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={handleSaveScannedValue} style={styles.shotBtn}>
-                                    <View style={styles.circle}>
-
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity>
-                                    <Text>Manual Input</Text>
-                                </TouchableOpacity>
-                            </SafeAreaView>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <Text>Manual Input</Text>
+                            </TouchableOpacity>
                         </SafeAreaView>
-                    </>
+                    </SafeAreaView>
                 )}
             </>
         )
-    );
+    )
+
 }
 
 const styles = StyleSheet.create({
@@ -95,7 +91,7 @@ const styles = StyleSheet.create({
     },
     btnSection: {
         width: width,
-        height: 220,
+        height: 200,
         backgroundColor: '#fff',
         position: 'absolute',
         bottom: 0,
@@ -104,17 +100,12 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingTop: 20,
+        paddingTop: 20
     },
     btnSectionH1: {
         fontSize: 22,
         fontWeight: 600,
         color: '#000000'
-    },
-    btnSectionH2: {
-        fontSize: 40,
-        fontWeight: 600,
-        color: '#fff'
     },
     buttons: {
         width: '100%',
@@ -143,27 +134,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         borderWidth: 3,
         borderColor: '#fff'
-    },
-    focus1: {
-        position: 'absolute',
-        top: 20,
-        left: 20
-    },
-    focus2: {
-        position: 'absolute',
-        top: 20,
-        right: 20
-    },
-    focus3: {
-        position: 'absolute',
-        bottom: 300,
-        left: 20
-    },
-    focus4: {
-        position: 'absolute',
-        bottom: 300,
-        right: 20
     }
 });
 
-export default Scanner;
+export default BarcodeScanner;
